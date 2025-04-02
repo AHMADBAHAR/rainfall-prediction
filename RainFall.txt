@@ -1,0 +1,122 @@
+# Rainfall Prediction Using Random Forest Classifier
+
+## Project Overview
+This project predicts whether rainfall will occur based on meteorological features using a Random Forest Classifier. The dataset is preprocessed, balanced, and trained with hyperparameter tuning.
+
+## Concepts and Algorithms Used
+### 1. **Machine Learning Algorithms**
+- **Random Forest Classifier**: An ensemble learning method that builds multiple decision trees and combines their outputs to improve accuracy and prevent overfitting.
+
+### 2. **Data Preprocessing**
+- Handling missing values using mode and median imputation.
+- Encoding categorical data (Yes/No → 1/0).
+- Feature selection by dropping highly correlated features.
+- Downsampling to balance the dataset.
+- Splitting data into training and test sets.
+
+### 3. **Exploratory Data Analysis (EDA)**
+- Statistical summary of data.
+- Distribution plots using histograms.
+- Correlation heatmap.
+- Boxplots for detecting outliers.
+
+### 4. **Model Evaluation Metrics**
+- Accuracy Score
+- Confusion Matrix
+- Classification Report (Precision, Recall, F1-score)
+- Cross-validation for robust performance evaluation.
+
+### 5. **Hyperparameter Tuning**
+- Using `GridSearchCV` to optimize `RandomForestClassifier` parameters like `n_estimators`, `max_depth`, `min_samples_split`, etc.
+
+## Steps and Explanation
+
+### 1. **Importing Dependencies**
+The required libraries for data manipulation, visualization, model training, and evaluation are imported.
+
+### 2. **Data Collection and Processing**
+- Load the dataset (`Rainfall.csv`) into a Pandas DataFrame.
+- Inspect the dataset structure, check for missing values, and clean column names.
+- Drop unnecessary columns (e.g., `day`).
+- Handle missing values using mode for categorical data and median for numerical data.
+- Convert categorical labels (`rainfall`) into numerical values (1 for 'yes', 0 for 'no').
+
+### 3. **Exploratory Data Analysis (EDA)**
+- Plot histograms for feature distributions.
+- Visualize class distribution of the target variable (`rainfall`).
+- Compute and visualize feature correlations using a heatmap.
+- Use box plots to identify outliers in features.
+
+### 4. **Data Preprocessing**
+- Drop highly correlated features (`maxtemp`, `temparature`, `mintemp`).
+- Balance the dataset using downsampling to handle class imbalance.
+- Split the dataset into features (`X`) and target (`y`).
+- Split data into training (80%) and test (20%) sets.
+
+### 5. **Model Training**
+- Use a `RandomForestClassifier`.
+- Apply hyperparameter tuning with `GridSearchCV` to find the best parameters.
+- Train the model with the best parameters.
+
+### 6. **Model Evaluation**
+- Perform cross-validation and compute the mean accuracy.
+- Evaluate the test set performance using:
+  - Accuracy Score
+  - Confusion Matrix
+  - Classification Report
+
+### 7. **Prediction on Unknown Data**
+- Create a sample input feature vector.
+- Load the trained model from `rainfall_prediction_model.pkl`.
+- Predict whether rainfall will occur based on the trained model.
+- Display the prediction result.
+
+### 8. **Saving and Loading the Model**
+- The trained model and feature names are saved in a `.pkl` file using `pickle`.
+- The model can be loaded later for making predictions on new data.
+
+## How to Use
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/rainfall-prediction.git
+   ```
+2. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+3. Run the script to train and evaluate the model:
+   ```bash
+   python rainfall_prediction.py
+   ```
+4. Load the saved model and make a prediction:
+   ```python
+   import pickle
+   import pandas as pd
+   
+   # Load the model
+   with open("rainfall_prediction_model.pkl", "rb") as file:
+       model_data = pickle.load(file)
+   model = model_data["model"]
+   feature_names = model_data["feature_names"]
+   
+   # Sample input
+   input_data = (1015.9, 19.9, 95, 81, 0.0, 40.0, 13.7)
+   input_df = pd.DataFrame([input_data], columns=feature_names)
+   prediction = model.predict(input_df)
+   
+   print("Prediction result:", "Rainfall" if prediction[0] == 1 else "No Rainfall")
+   ```
+
+## Repository Structure
+```
+📂 rainfall-prediction
+├── 📄 Rainfall.csv              # Dataset
+├── 📄 rainfall_prediction.py    # Model training script
+├── 📄 rainfall_prediction_model.pkl # Trained model
+├── 📄 requirements.txt          # Required libraries
+├── 📄 README.md                 # Project documentation
+```
+
+## Conclusion
+This project demonstrates a complete machine learning pipeline for rainfall prediction using Random Forest. The trained model can be used for real-time predictions, and further improvements can be made using feature engineering and advanced models.
+
